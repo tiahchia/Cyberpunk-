@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neo-Tokyo 2099</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --neon-pink: #ff2d95;
+            --neon-blue: #00f3ff;
+            --neon-purple: #9d00ff;
+            --dark-bg: #050508;
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Grid Background */
+        .cyber-grid {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            perspective: 500px;
+            transform-style: preserve-3d;
+            animation: gridMove 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+        
+        /* Rain Effect */
+        .rain {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.3;
+        }
+        
+        .rain-drop {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background: linear-gradient(to bottom, transparent, var(--neon-blue));
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
+        
+        /* Header */
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.3);
+            background: rgba(5, 5, 8, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px var(--neon-pink)); }
+            to { filter: drop-shadow(0 0 20px var(--neon-blue)); }
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--neon-blue);
+            transition: width 0.3s;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .nav-links a:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .nav-links a:hover::after { width: 100%; }
+        
+        /* Hero Section */
+        .hero {
+            position: relative;
+            z-index: 10;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+        }
+        
+        .glitch-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 1rem;
+            position: relative;
+            text-transform: uppercase;
+        }
+        
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch-text::before {
+            animation: glitch-1 2s infinite;
+            color: var(--neon-pink);
+            z-index: -1;
+        }
+        
+        .glitch-text::after {
+            animation: glitch-2 2s infinite;
+            color: var(--neon-blue);
+            z-index: -2;
+        }
+        
+        @keyframes glitch-1 {
+            0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+            20% { clip-path: inset(20% 0 30% 0); transform: translate(-2px, 2px); }
+            40% { clip-path: inset(50% 0 20% 0); transform: translate(2px, -2px); }
+            60% { clip-path: inset(10% 0 60% 0); transform: translate(-2px, 0); }
+            80% { clip-path: inset(80% 0 5% 0); transform: translate(2px, 2px); }
+        }
+        
+        @keyframes glitch-2 {
+            0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -2px); }
+            40% { clip-path: inset(30% 0 40% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(10% 0 80% 0); transform: translate(2px, 0); }
+            80% { clip-path: inset(40% 0 30% 0); transform: translate(-2px, -2px); }
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 2rem;
+            letter-spacing: 0.1em;
+        }
+        
+        .cyber-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .cyber-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            transition: left 0.5s;
+        }
+        
+        .cyber-button:hover {
+            background: var(--neon-blue);
+            color: var(--dark-bg);
+            box-shadow: 0 0 30px var(--neon-blue);
+        }
+        
+        .cyber-button:hover::before {
+            left: 100%;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(5, 5, 8, 0.95);
+            border-top: 1px solid var(--neon-blue);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-around;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--neon-pink);
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        /* Interactive Cards */
+        .features {
+            position: relative;
+            z-index: 10;
+            padding: 5rem 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--neon-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.2);
+        }
+        
+        .feature-card:hover::before {
+            left: 100%;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 10px var(--neon-blue));
+        }
+        
+        .feature-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--neon-blue);
+        }
+        
+        /* Scanline Effect */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.1) 50%,
+                rgba(0,0,0,0.1)
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.3;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal.active { display: flex; }
+        
+        .modal-content {
+            background: var(--dark-bg);
+            border: 2px solid var(--neon-blue);
+            padding: 3rem;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 243, 255, 0.3);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--neon-pink);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="rain" id="rain"></div>
+    <div class="scanlines"></div>
+    
+    <header>
+        <div class="logo">NEO-TOKYO</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#districts">Districts</a></li>
+                <li><a href="#factions">Factions</a></li>
+                <li><a href="#tech">Tech</a></li>
+                <li><a href="#" onclick="openModal()">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="glitch-text" data-text="WELCOME TO 2099">WELCOME TO 2099</h1>
+            <p class="subtitle">The future is now. Experience the cybernetic revolution.</p>
+            <a href="#" class="cyber-button" onclick="openModal()">Enter the Grid</a>
+        </div>
+    </section>
+
+    <section class="features" id="districts">
+        <div class="feature-card" onclick="activateCard(this)">
+            <div class="feature-icon">🏙️</div>
+            <h3>Neon District</h3>
+            <p>Experience the brightest lights and darkest shadows of the metropolis.</p>
+        </div>
+        <div class="feature-card" onclick="activateCard(this)">
+            <div class="feature-icon">🤖</div>
+            <h3>Android Quarter</h3>
+            <p>Where synthetic lifeforms and humans coexist in digital harmony.</p>
+        </div>
+        <div class="feature-card" onclick="activateCard(this)">
+            <div class="feature-icon">💾</div>
+            <h3>Data Haven</h3>
+            <p>Secure your consciousness in the cloud. Backup your soul.</p>
+        </div>
+    </section>
+
+    <div class="stats-bar">
+        <div class="stat">
+            <div class="stat-value" id="population">12,847,293</div>
+            <div class="stat-label">Population</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="androids">4,231,887</div>
+            <div class="stat-label">Androids</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="uptime">99.9%</div>
+            <div class="stat-label">Grid Uptime</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="threat">LOW</div>
+            <div class="stat-label">Threat Level</div>
+        </div>
+    </div>
+
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">✕</button>
+            <h2 class="glitch-text" data-text="SYSTEM ACCESS" style="font-size: 1.5rem; margin-bottom: 1rem;">SYSTEM ACCESS</h2>
+            <p style="margin-bottom: 2rem; color: rgba(255,255,255,0.7);">Enter your credentials to access the mainframe.</p>
+            <input type="text" placeholder="USERNAME" style="width: 100%; padding: 1rem; margin-bottom: 1rem; background: rgba(0,243,255,0.1); border: 1px solid var(--neon-blue); color: white; font-family: inherit;">
+            <input type="password" placeholder="PASSWORD" style="width: 100%; padding: 1rem; margin-bottom: 1rem; background: rgba(0,243,255,0.1); border: 1px solid var(--neon-blue); color: white; font-family: inherit;">
+            <button class="cyber-button" style="width: 100%;" onclick="closeModal()">AUTHENTICATE</button>
+        </div>
+    </div>
+
+    <script>
+        // Generate rain drops
+        const rainContainer = document.getElementById('rain');
+        for (let i = 0; i < 100; i++) {
+            const drop = document.createElement('div');
+            drop.className = 'rain-drop';
+            drop.style.left = Math.random() * 100 + '%';
+            drop.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
+            drop.style.animationDelay = Math.random() * 2 + 's';
+            rainContainer.appendChild(drop);
+        }
+
+        // Live counter animation
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            const range = end - start;
+            const minTimer = 50;
+            let stepTime = Math.abs(Math.floor(duration / range));
+            stepTime = Math.max(stepTime, minTimer);
+            let startTime = new Date().getTime();
+            let endTime = startTime + duration;
+            let timer;
+            
+            function run() {
+                let now = new Date().getTime();
+                let remaining = Math.max((endTime - now) / duration, 0);
+                let value = Math.round(end - (remaining * range));
+                obj.innerHTML = value.toLocaleString();
+                if (value == end) {
+                    clearInterval(timer);
+                }
+            }
+            
+            timer = setInterval(run, stepTime);
+            run();
+        }
+
+        // Animate stats on load
+        window.addEventListener('load', () => {
+            animateValue('population', 12000000, 12847293, 2000);
+            animateValue('androids', 4000000, 4231887, 2000);
+        });
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        // Card activation effect
+        function activateCard(card) {
+            card.style.borderColor = 'var(--neon-pink)';
+            card.style.boxShadow = '0 0 30px var(--neon-pink)';
+            setTimeout(() => {
+                card.style.borderColor = '';
+                card.style.boxShadow = '';
+            }, 300);
+        }
+
+        // Random threat level fluctuation
+        setInterval(() => {
+            const threats = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'];
+            const colors = ['#00ff00', '#ffff00', '#ff8800', '#ff0000'];
+            const threatEl = document.getElementById('threat');
+            const random = Math.floor(Math.random() * 4);
+            threatEl.textContent = threats[random];
+            threatEl.style.color = colors[random];
+            threatEl.style.textShadow = `0 0 10px ${colors[random]}`;
+        }, 5000);
+    </script>
+</body>
+</html>
